@@ -464,6 +464,7 @@ GameObject:
   - component: {fileID: 5356019729636985440}
   - component: {fileID: 7489135354989841744}
   - component: {fileID: 1786608626645440472}
+  - component: {fileID: 2650373106567445498}
   m_Layer: 8
   m_Name: Barracks
   m_TagString: Barracks
@@ -603,3 +604,15 @@ MonoBehaviour:
   spawnPoint: {fileID: 6430167885607136955}
   DenyingSprite: {fileID: 4016732477331959790}
   AllowBuildSprite: {fileID: 4635731901974627075}
+--- !u!114 &2650373106567445498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6137446267300333079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11ab12d7cfe12f74b89975983a27c097, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

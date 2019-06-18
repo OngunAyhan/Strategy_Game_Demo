@@ -262,6 +262,7 @@ GameObject:
   - component: {fileID: 6473503546299117268}
   - component: {fileID: 933270571105269552}
   - component: {fileID: 5892423943051296612}
+  - component: {fileID: 6789555167976494105}
   m_Layer: 8
   m_Name: PowerPlant
   m_TagString: PowerPlant
@@ -400,6 +401,18 @@ MonoBehaviour:
   spawnPoint: {fileID: 0}
   DenyingSprite: {fileID: 7816125690760736548}
   AllowBuildSprite: {fileID: 9119956768919697473}
+--- !u!114 &6789555167976494105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8438777890215839066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11ab12d7cfe12f74b89975983a27c097, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9119956768919697473
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Pathfinding;
 
 
+
 public class GameController : Singleton //The object that contains this script should be single 
 {
     GameObject AStar;// A scene object contains A Star Path(Field of 200x200 nodes) component
@@ -102,6 +103,8 @@ public class GameController : Singleton //The object that contains this script s
 
         }
 
+        ClearMap();
+
         DragAndBuild();
 
         if (CooldownPanel.activeSelf && CooldownImage.fillAmount > 0)//Cooldown decreases when player spawned a soldier, if value equals to 0 then disable cooldown panel
@@ -116,6 +119,15 @@ public class GameController : Singleton //The object that contains this script s
 
     }
     
+    void ClearMap()//Publish an event to destroy all th scene objects
+    {
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            GetComponent<Publisher>().PublishTheEvent();
+        }
+    }
+
+
     //Disable Selected Sprite and set selected soldier of GameController null
     void ReleaseSoldiers()
     {
