@@ -11,6 +11,6 @@ public class BuildingFactory<T> : MonoBehaviour where T : MonoBehaviour
 
     public T GetNewInstance()
     {
-        return Instantiate(prefab);
+        return Instantiate(prefab,Camera.main.WorldToScreenPoint(Input.mousePosition),Quaternion.identity);
     }
 }

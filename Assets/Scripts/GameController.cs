@@ -10,47 +10,57 @@ public class GameController : Singleton //The object that contains this script s
 {
     GameObject AStar;// A scene object contains A Star Path(Field of 200x200 nodes) component
     AstarPath astarPath;
-    public GameObject BarracksPrefab; // Prefab of Baracks Structure
-    public GameObject PowerPlantPrefab; // Prefab of Power Plant Structure
-    public GameObject SoldierPrefab; // Prefab of Soldier
+    
+    
     Vector2 mousePos; // Position of Mouse Cursor
-    public GameObject Building; // Selected Building
-    public bool deny; // Bool used for detecting if a structure in the building phase, overlaps a builded one
-    public bool dragging = false; // Bool used for dragging a structure while building it
+    
     ProperBuildingScript properBuildingScript;
+    
+    
+    
+
+    
+
+    [Header("Game Panels")]
+    public GameObject ProtectorPanel;//Panel must be enabled if a structure is dragging. Avoid clicking buttons while dragging structure
     public GameObject BarracksPanel;// Information Panel of Barracks 
     public GameObject PowerPlantPanel;// Information Panel of Power Plant
     public GameObject CooldownPanel;// Panel used for giving a little cooldown when spawning soldiers
-    SelectSoldier SelectSoldier;
-    private bool CooldownBool = true;// Boolean used for giving a little cooldown when spawning soldiers
-    public Vector2 BuildingPosition;// Position of Selected Building in Vector2
 
-    Image CooldownImage;// Image used for soldier spawn cooldown
-    
+
+    [Header("Soldier")]
+    public GameObject SoldierPrefab; // Prefab of Soldier
     public GameObject Soldier;// Spawned soldier
-
-    public List<GameObject> Soldiers = new List<GameObject>();// List of all soldiers in the scene
-    public List<GameObject> Buildings = new List<GameObject>();// List of all structures in the scene
-    public List<GameObject> MoveToPosAnchorPoints = new List<GameObject>();
     public GameObject ClickPosition; // Mouse click position
     public GameObject ClickPositionOBJ; // Object used for setting click position of soldier
     public GameObject MoveToPosAnchor; // Soldiers move pos
     public GameObject MoveToPosAnchorOBJ;// Object used for indicating the soldier's move position
-    public bool Selected; // Bool used for detecting if a building is selected
-    public GameObject ProtectorPanel;//Panel must be enabled if a structure is dragging. Avoid clicking buttons while dragging structure
+    SelectSoldier SelectSoldier;
+    private bool CooldownBool = true;// Boolean used for giving a little cooldown when spawning soldiers
+    Image CooldownImage;// Image used for soldier spawn cooldown
 
+    [Header("Building")]
+    public GameObject Building; // Selected Building
+    public Vector2 BuildingPosition;// Position of Selected Building in Vector2
+    public bool Selected; // Bool used for detecting if a building is selected
+    public bool dragging = false; // Bool used for dragging a structure while building it
+    
+    
+
+    [Header("Game Objects")]
+    public List<GameObject> Soldiers = new List<GameObject>();// List of all soldiers in the scene
+    public List<GameObject> Buildings = new List<GameObject>();// List of all structures in the scene
+    public List<GameObject> MoveToPosAnchorPoints = new List<GameObject>();
+
+    [Header("Gameplay Buttons")]
     [SerializeField]
     private List<Button> BarracksButtons = new List<Button>();
-
     [SerializeField]
     private List<Button> PPButtons = new List<Button>();
-
     [SerializeField]
     private Button Soldier_Button;
-
     [SerializeField]
     private Button PowerPanelPanelCloseButton;
-
     [SerializeField]
     private Button BarracksPanelCloseButton;
 
@@ -161,7 +171,7 @@ public class GameController : Singleton //The object that contains this script s
                 {
                     if (!properBuildingScript.denying)
                     {
-
+                        Cursor.visible = true;
                         astarPath.Scan();
                         Building.GetComponent<ProperBuildingScript>().builded = true;
                         Buildings.Add(Building);
@@ -174,6 +184,7 @@ public class GameController : Singleton //The object that contains this script s
                 if (Input.GetMouseButtonDown(1))
                 {
                     ProtectorPanel.SetActive(false);
+                    Cursor.visible = true;
                     dragging = false;
                     Destroy(Building);
                 }
@@ -193,7 +204,7 @@ public class GameController : Singleton //The object that contains this script s
         ProtectorPanel.SetActive(true);//To avoid clicking another button while in this condition
         BarracksPanel.SetActive(false);
         PowerPlantPanel.SetActive(false);
-        
+        Cursor.visible = false;
         var building = barracksFactory.GetNewInstance();//Building by barracks factory
         Building = building.gameObject;
         properBuildingScript = Building.GetComponent<ProperBuildingScript>();
@@ -211,6 +222,7 @@ public class GameController : Singleton //The object that contains this script s
         ProtectorPanel.SetActive(true);//To avoid clicking another button while in this condition
         BarracksPanel.SetActive(false);
         PowerPlantPanel.SetActive(false);
+        Cursor.visible = false;
         var building = powerPlantFactory.GetNewInstance();//Building by pp factory
         Building = building.gameObject;
         properBuildingScript = Building.GetComponent<ProperBuildingScript>();
