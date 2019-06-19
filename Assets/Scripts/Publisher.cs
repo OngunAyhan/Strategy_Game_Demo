@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Publish the event(Backspace) and the subscribers will listen to this published event.
 public class Publisher : MonoBehaviour
 {
     public delegate void PublishEvent();

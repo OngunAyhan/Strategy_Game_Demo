@@ -53,8 +53,9 @@ public class GameController : Singleton //The object that contains this script s
 
     [SerializeField]
     private Button BarracksPanelCloseButton;
-    
-    
+
+    public BarracksFactory barracksFactory;
+    public PowerPlantFactory powerPlantFactory;
 
     private void Awake()
     {
@@ -192,7 +193,9 @@ public class GameController : Singleton //The object that contains this script s
         ProtectorPanel.SetActive(true);//To avoid clicking another button while in this condition
         BarracksPanel.SetActive(false);
         PowerPlantPanel.SetActive(false);
-        Building = Instantiate(BarracksPrefab,mousePos,Quaternion.identity);
+        
+        var building = barracksFactory.GetNewInstance();//Building by barracks factory
+        Building = building.gameObject;
         properBuildingScript = Building.GetComponent<ProperBuildingScript>();
         
         
@@ -208,7 +211,8 @@ public class GameController : Singleton //The object that contains this script s
         ProtectorPanel.SetActive(true);//To avoid clicking another button while in this condition
         BarracksPanel.SetActive(false);
         PowerPlantPanel.SetActive(false);
-        Building = Instantiate(PowerPlantPrefab, mousePos, Quaternion.identity);
+        var building = powerPlantFactory.GetNewInstance();//Building by pp factory
+        Building = building.gameObject;
         properBuildingScript = Building.GetComponent<ProperBuildingScript>();
         
         
