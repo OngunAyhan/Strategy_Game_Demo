@@ -402,6 +402,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 0}
   DenyingSprite: {fileID: 7816125690760736548}
   AllowBuildSprite: {fileID: 9119956768919697473}
+  StructureText: {fileID: 4389968865010928200}
 --- !u!114 &6789555167976494105
 MonoBehaviour:
   m_ObjectHideFlags: 0

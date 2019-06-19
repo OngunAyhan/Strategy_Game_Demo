@@ -14,9 +14,12 @@ public class ProperBuildingScript : MonoBehaviour
     public Transform spawnPoint;// Transform of spawn point of barracks 
     public GameObject DenyingSprite;// Sprite, shows up when structure overlaps another
     public GameObject AllowBuildSprite;//Sprite, shows that the structure can be builded
+    public GameObject StructureText;
+    
     private void Start()
     {
         GameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();//Get the GameController component of the object tagged 'GameController'
+        
     }
 
 
@@ -29,7 +32,16 @@ public class ProperBuildingScript : MonoBehaviour
         AllowBuilding();
         
     }
+
     
+    private void OnMouseExit()
+    {
+        StructureText.SetActive(false);
+    }
+    private void OnMouseEnter()//Set structure name enabled when mouse is over building
+    {
+        StructureText.SetActive(true);
+    }
 
     //Activate Denying Sprite when denying
     void DenyingSpriteSetter()
