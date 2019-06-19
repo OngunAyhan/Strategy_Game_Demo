@@ -27,8 +27,8 @@ public class CameraMovement : MonoBehaviour
         {
             ZoomHandling();
         }
-
-        if (Input.GetKeyDown(KeyCode.Space))//Set the default camera size by pressing space button
+        
+        if (Input.GetKeyDown(KeyCode.Mouse2))//Set the default camera size by pressing mouse wheel
         {
             Camera.main.orthographicSize = DefaultCameraSize;
         }
