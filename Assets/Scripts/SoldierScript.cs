@@ -21,6 +21,7 @@ public class SoldierScript : MonoBehaviour
     Vector2 mousePos;//Current mouse position
     
     GameController GameController;
+    GameView GameView;
     SelectSoldier SelectSoldier;
     public bool OpenField = true;//Boolean used for detecting if soldier is not colliding with another
     public bool SoldierMoving;//Boolean used for detecting if soldier is moving
@@ -36,6 +37,7 @@ public class SoldierScript : MonoBehaviour
         aIDestination = GetComponent<AIDestinationSetter>();
         aIDestination.target = soldierSpawnPointTransform;
         GameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        GameView = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameView>();
         SelectSoldier = GameObject.FindGameObjectWithTag("GameController").GetComponent<SelectSoldier>();
         SetClickPositionAndAnchor();//Set click position and moving anchor for this soldier when it spawns
         
@@ -48,8 +50,8 @@ public class SoldierScript : MonoBehaviour
         if (GameController.Selected)//if Soldier is selected
         {
             GameController.Selected = false;//Set it to not selected
-            GameController.PowerPlantPanel.SetActive(false);//
-            GameController.BarracksPanel.SetActive(false);  //Disable Panels
+            GameView.PowerPlantPanel.SetActive(false);//
+            GameView.BarracksPanel.SetActive(false);  //Disable Panels
         }
     }
 
@@ -63,7 +65,7 @@ public class SoldierScript : MonoBehaviour
         {
             if (this.gameObject == GameController.Soldiers[i])//if i is this soldier
             {
-                ClickedPositionOBJ = SelectSoldier.ClickPositions[i];//Than i of ClickPositions is set to this soldier's clickPositionOBJ
+                ClickedPositionOBJ = GameController.ClickPositions[i];//Than i of ClickPositions is set to this soldier's clickPositionOBJ
                 MoveToPosAnchorOBJ = GameController.MoveToPosAnchorPoints[i];//Than i of MoveToPosAnchorPoints is set to this soldier's MoveToPosAnchorOBJ
             }
         }

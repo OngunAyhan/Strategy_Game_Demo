@@ -5,7 +5,7 @@ using UnityEngine;
 public class SelectSoldier : MonoBehaviour
 {
     public GameObject SelectedSoldier;// Selected soldier object
-    public List<GameObject> ClickPositions = new List<GameObject>();  //List of the click positions of the soldiers
+    
 
 
    

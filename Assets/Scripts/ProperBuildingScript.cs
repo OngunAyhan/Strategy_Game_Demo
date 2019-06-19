@@ -10,6 +10,7 @@ public class ProperBuildingScript : MonoBehaviour
     public bool denying = false;// Boolean value used for detecting if a structure overlaps another
 
     GameController GameController;
+    GameView GameView;
     public bool builded;//Bool used for detecting if a structure is builded 
     public Transform spawnPoint;// Transform of spawn point of barracks 
     public GameObject DenyingSprite;// Sprite, shows up when structure overlaps another
@@ -19,7 +20,7 @@ public class ProperBuildingScript : MonoBehaviour
     private void Start()
     {
         GameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();//Get the GameController component of the object tagged 'GameController'
-        
+        GameView = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameView>();
     }
 
 
@@ -135,21 +136,21 @@ public class ProperBuildingScript : MonoBehaviour
             GameController.Selected = true;
             if (gameObject.tag == "Barracks")//If structure is Barracks and if Power Plant Panel is enabled, then set Barracks Panel enabled, set Power Plant Panel disabled
             {
-                if (GameController.PowerPlantPanel.activeSelf)
+                if (GameView.PowerPlantPanel.activeSelf)
                 {
-                    GameController.PowerPlantPanel.SetActive(false);
+                    GameView.PowerPlantPanel.SetActive(false);
                 }
-                GameController.BarracksPanel.SetActive(true);
+                GameView.BarracksPanel.SetActive(true);
                 GameController.BuildingPosition = gameObject.transform.position;
                 
             }
             if (gameObject.tag == "PowerPlant")//If structure is Power Plant and if Barracks Panel is enabled, then set Power Plant Panel enabled, set Barracks Panel disabled
             {
-                if (GameController.BarracksPanel.activeSelf)
+                if (GameView.BarracksPanel.activeSelf)
                 {
-                    GameController.BarracksPanel.SetActive(false);
+                    GameView.BarracksPanel.SetActive(false);
                 }
-                GameController.PowerPlantPanel.SetActive(true);
+                GameView.PowerPlantPanel.SetActive(true);
                 GameController.BuildingPosition = gameObject.transform.position;
             }
         }

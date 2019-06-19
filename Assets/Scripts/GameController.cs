@@ -10,25 +10,16 @@ public class GameController : Singleton //The object that contains this script s
 {
     GameObject AStar;// A scene object contains A Star Path(Field of 200x200 nodes) component
     AstarPath astarPath;
-    
-    
+    public Image CooldownImage;// Image used for soldier spawn cooldown
+
     Vector2 mousePos; // Position of Mouse Cursor
     
     ProperBuildingScript properBuildingScript;
-    
-    
-    
 
-    
-
-    [Header("Game Panels")]
-    public GameObject ProtectorPanel;//Panel must be enabled if a structure is dragging. Avoid clicking buttons while dragging structure
-    public GameObject BarracksPanel;// Information Panel of Barracks 
-    public GameObject PowerPlantPanel;// Information Panel of Power Plant
-    public GameObject CooldownPanel;// Panel used for giving a little cooldown when spawning soldiers
+    GameView GameView;
 
 
-    [Header("Soldier")]
+    [Header("Soldier Header")]
     public GameObject SoldierPrefab; // Prefab of Soldier
     public GameObject Soldier;// Spawned soldier
     public GameObject ClickPosition; // Mouse click position
@@ -37,9 +28,9 @@ public class GameController : Singleton //The object that contains this script s
     public GameObject MoveToPosAnchorOBJ;// Object used for indicating the soldier's move position
     SelectSoldier SelectSoldier;
     private bool CooldownBool = true;// Boolean used for giving a little cooldown when spawning soldiers
-    Image CooldownImage;// Image used for soldier spawn cooldown
+    
 
-    [Header("Building")]
+    [Header("Building Header")]
     public GameObject Building; // Selected Building
     public Vector2 BuildingPosition;// Position of Selected Building in Vector2
     public bool Selected; // Bool used for detecting if a building is selected
@@ -50,55 +41,27 @@ public class GameController : Singleton //The object that contains this script s
     [Header("Game Objects")]
     public List<GameObject> Soldiers = new List<GameObject>();// List of all soldiers in the scene
     public List<GameObject> Buildings = new List<GameObject>();// List of all structures in the scene
+    public List<GameObject> ClickPositions = new List<GameObject>();  //List of the click positions of the soldiers
     public List<GameObject> MoveToPosAnchorPoints = new List<GameObject>();
 
-    [Header("Gameplay Buttons")]
-    [SerializeField]
-    private List<Button> BarracksButtons = new List<Button>();
-    [SerializeField]
-    private List<Button> PPButtons = new List<Button>();
-    [SerializeField]
-    private Button Soldier_Button;
-    [SerializeField]
-    private Button PowerPanelPanelCloseButton;
-    [SerializeField]
-    private Button BarracksPanelCloseButton;
 
-    public BarracksFactory barracksFactory;
-    public PowerPlantFactory powerPlantFactory;
+    [Header("Building Factories")]
+    public BarracksFactory barracksFactory;//Barracks factory 
+    public PowerPlantFactory powerPlantFactory;//Power plant factory
 
-    private void Awake()
-    {
-        SetBarracksButtonFunctions();//
-        SetPPButtonFunctions();//
-        Soldier_Button.onClick.AddListener(SoldierButton);//
-        BarracksPanelCloseButton.onClick.AddListener(CloseBarracksPanel);//
-        PowerPanelPanelCloseButton.onClick.AddListener(ClosePowerPlantPanel);//In case another gamecontroller in the scene. To not lose the connection to the buttons in the editor
-    }
+    
 
     private void Start()
     {
-        CooldownImage = CooldownPanel.GetComponent<Image>();
+        GameView = GetComponent<GameView>();
+        
         AStar = GameObject.FindGameObjectWithTag("AStar");
         astarPath = AStar.GetComponent<AstarPath>();
         SelectSoldier = GetComponent<SelectSoldier>();
-        
+        CooldownImage = GameView.CooldownPanel.GetComponent<Image>();
     }
     
-    void SetBarracksButtonFunctions()
-    {
-        foreach (Button button in BarracksButtons)
-        {
-            button.onClick.AddListener(BarracksButton);
-        }
-    }
-    void SetPPButtonFunctions()
-    {
-        foreach (Button button in PPButtons)
-        {
-            button.onClick.AddListener(PowerPlantButton);
-        }
-    }
+    
 
     void Update()
     {
@@ -118,13 +81,13 @@ public class GameController : Singleton //The object that contains this script s
 
         DragAndBuild();
 
-        if (CooldownPanel.activeSelf && CooldownImage.fillAmount > 0)//Cooldown decreases when player spawned a soldier, if value equals to 0 then disable cooldown panel
+        if (GameView.CooldownPanel.activeSelf && CooldownImage.fillAmount > 0)//Cooldown decreases when player spawned a soldier, if value equals to 0 then disable cooldown panel
         {
             
             CooldownImage.fillAmount -= Time.deltaTime;
             if (CooldownImage.fillAmount == 0)
             {
-                CooldownPanel.SetActive(false);
+                GameView.CooldownPanel.SetActive(false);
             }
         }
 
@@ -176,14 +139,14 @@ public class GameController : Singleton //The object that contains this script s
                         Building.GetComponent<ProperBuildingScript>().builded = true;
                         Buildings.Add(Building);
                         dragging = false;
-                        ProtectorPanel.SetActive(false);
+                        GameView.ProtectorPanel.SetActive(false);
                         
                     }
 
                 }
                 if (Input.GetMouseButtonDown(1))
                 {
-                    ProtectorPanel.SetActive(false);
+                    GameView.ProtectorPanel.SetActive(false);
                     Cursor.visible = true;
                     dragging = false;
                     Destroy(Building);
@@ -201,9 +164,9 @@ public class GameController : Singleton //The object that contains this script s
     //Set dragging true
     public void BarracksButton()
     {
-        ProtectorPanel.SetActive(true);//To avoid clicking another button while in this condition
-        BarracksPanel.SetActive(false);
-        PowerPlantPanel.SetActive(false);
+        GameView.ProtectorPanel.SetActive(true);//To avoid clicking another button while in this condition
+        GameView.BarracksPanel.SetActive(false);
+        GameView.PowerPlantPanel.SetActive(false);
         Cursor.visible = false;
         var building = barracksFactory.GetNewInstance();//Building by barracks factory
         Building = building.gameObject;
@@ -219,9 +182,9 @@ public class GameController : Singleton //The object that contains this script s
     //Set dragging true
     public void PowerPlantButton()
     {
-        ProtectorPanel.SetActive(true);//To avoid clicking another button while in this condition
-        BarracksPanel.SetActive(false);
-        PowerPlantPanel.SetActive(false);
+        GameView.ProtectorPanel.SetActive(true);//To avoid clicking another button while in this condition
+        GameView.BarracksPanel.SetActive(false);
+        GameView.PowerPlantPanel.SetActive(false);
         Cursor.visible = false;
         var building = powerPlantFactory.GetNewInstance();//Building by pp factory
         Building = building.gameObject;
@@ -243,7 +206,7 @@ public class GameController : Singleton //The object that contains this script s
     {
         if (CooldownBool)
         {
-            CooldownPanel.SetActive(true);
+            GameView.CooldownPanel.SetActive(true);
             StartCoroutine(SpawnCoolDown());
             
             Soldier = Instantiate(SoldierPrefab, BuildingPosition + new Vector2(0,-3f), Quaternion.identity);
@@ -251,7 +214,7 @@ public class GameController : Singleton //The object that contains this script s
             ClickPositionOBJ = Instantiate(ClickPosition, Soldier.transform.position, Quaternion.identity);
             MoveToPosAnchorOBJ = Instantiate(MoveToPosAnchor,Building.GetComponent<ProperBuildingScript>().spawnPoint.transform.position,Quaternion.identity);
             Soldiers.Add(Soldier);
-            SelectSoldier.ClickPositions.Add(ClickPositionOBJ);
+            ClickPositions.Add(ClickPositionOBJ);
             MoveToPosAnchorPoints.Add(MoveToPosAnchorOBJ);
             CooldownBool = false;
             
@@ -271,17 +234,7 @@ public class GameController : Singleton //The object that contains this script s
         CooldownBool = true;
     }
 
-    public void CloseBarracksPanel()
-    {
-        BarracksPanel.SetActive(false);
-        Selected = false;
-    }
-
-    public void ClosePowerPlantPanel()
-    {
-        PowerPlantPanel.SetActive(false);
-        Selected = false;
-    }
+    
 
 
 
